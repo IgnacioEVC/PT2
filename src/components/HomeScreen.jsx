@@ -1,42 +1,42 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
-import { addDoc, collection } from "firebase/firestore";
-import { db } from "../firebase/firebase";
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 function HomeScreen () {
 
-  const history = useNavigate()
+    const nombre = "Ignacio Villegas"
 
-  const handleClick = () =>{
-    signOut(auth).then(val=>{
-      console.log(val,"val")
-      history("/")
-    })
-}
+    const navigate = useNavigate();
 
-const [pregunta, setPregunta] = useState("");
-const preguntaCollection = collection(db, "Preguntas");
+    const history = useNavigate();
 
-const enviarPregunta = async () => {
-  await addDoc(preguntaCollection, {pregunta: pregunta});
-  alert("Pregunta Enviada")
-}
+    const handleClick = () =>{
+      signOut(auth).then(val=>{
+        console.log("Sesion Cerrada")
+        history("/")
+      })
+  }
 
-  return (
-    <div>
-
-      <h1>HomeScreen</h1>
-
-      <input style={{padding: 20, flex: 'auto'}}placeholder="Ingresa la Pregunta" onChange={(e) => {setPregunta(e.target.value)}}/><br/><br/>
-
-      <button onClick={enviarPregunta}>Enviar Pregunta</button><br/><br/>
-
-      <button onClick={handleClick}>Log Out</button><br/>
-
-    </div>
-  )
+    return(
+        <div className="bg-secondary">
+            <button type="submit" className="btn btn-success" onClick={handleClick}>Logout</button>
+            <div className="d-flex flex-column justify-content-center align-items-center bg-secondary vh-100">
+                <div className="d-flex justify-content-center align-items-center">
+                    <h1>Bienvenido {nombre}</h1>
+                </div>
+                <div className="d-flex justify-content-center align-items-center">
+                    <p>Porfavor seleccione una de las siguientes opciones:</p>
+                </div>
+                <div className="d-flex flex-column bg-white p-2 rounded w-25 justify-content-center align-items-center">
+                    <button type="submit" className="btn btn-success fw-bold w-100 rounded 0" onClick={()=>{navigate("/unidades")}}>Aprender</button><hr/>
+                    <button type="submit" className="btn btn-success fw-bold w-100 rounded 0" onClick={()=>{navigate("/unidades")}}>Ejercitar</button><hr/>
+                    <button type="submit" className="btn btn-success fw-bold w-100 rounded 0" onClick={()=>{navigate("/unidades")}}>Obtener Plan de Estudio</button>
+                </div>
+            </div>
+        </div>
+    )
 }
 
 export default HomeScreen;
